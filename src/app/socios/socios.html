@@ -1,0 +1,7 @@
+<h1>Os sócios são bonitos</h1>
+<ul>
+  @for (socio of socios; track socio) {
+    <li><p>{{ socio.nome }} - {{ socio.email}}</p></li>
+  }
+</ul>
+{{socios.length}} sócios encontrados.
