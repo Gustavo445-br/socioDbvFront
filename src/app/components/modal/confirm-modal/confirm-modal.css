@@ -1,0 +1,22 @@
+.confirm-modal__message {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-4);
+}
+
+.confirm-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+}
+
+@media (max-width: 480px) {
+  .confirm-modal__footer {
+    flex-direction: column-reverse;
+  }
+
+  .confirm-modal__footer .btn {
+    width: 100%;
+  }
+}

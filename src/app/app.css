@@ -1,0 +1,103 @@
+/* Welcome Section */
+.welcome-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.welcome-text {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-8);
+}
+
+/* Demo Grid */
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+}
+
+.demo-grid .card h3 {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-4);
+}
+
+.demo-grid .card ul {
+    margin-left: var(--spacing-5);
+    color: var(--color-text-secondary);
+}
+
+.demo-grid .card li {
+    margin-bottom: var(--spacing-2);
+}
+
+/* Color Showcase */
+.color-showcase {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-wrap: wrap;
+}
+
+.color-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.color-box {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.color-item span {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-align: center;
+}
+
+/* Demo Sections */
+.demo-section {
+    margin-bottom: var(--spacing-8);
+}
+
+.demo-section h3 {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-4);
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+}
+
+/* Badge Group */
+.badge-group {
+    display: flex;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .demo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+
+    .color-showcase {
+        justify-content: center;
+    }
+}

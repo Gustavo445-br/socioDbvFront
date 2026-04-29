@@ -1,0 +1,33 @@
+@for (modal of getActiveModals(); track modal.id) {
+  <app-modal
+    [isOpen]="true"
+    [title]="modal.config.title || ''"
+    [showCloseButton]="modal.config.showCloseButton !== false"
+    [closeOnBackdrop]="modal.config.closeOnBackdrop !== false"
+    [closeOnEscape]="modal.config.closeOnEscape !== false"
+    (close)="handleClose(modal.id)"
+  >
+    <!-- Body -->
+    <div class="confirm-modal__message">
+      {{ modal.config.message }}
+    </div>
+
+    <!-- Footer -->
+    <div slot="footer" class="confirm-modal__footer">
+      <button
+        type="button"
+        class="btn btn-ghost"
+        (click)="handleCancel(modal.id)"
+      >
+        {{ modal.config.cancelText || 'Cancelar' }}
+      </button>
+      <button
+        type="button"
+        [class]="modal.config.isDanger ? 'btn btn-secondary' : 'btn btn-primary'"
+        (click)="handleConfirm(modal.id)"
+      >
+        {{ modal.config.confirmText || 'Confirmar' }}
+      </button>
+    </div>
+  </app-modal>
+}

@@ -1,0 +1,13 @@
+<div class="layout-container">
+  <header class="layout-header">
+    <ng-content select="[slot='header']"></ng-content>
+  </header>
+  
+  <main class="layout-content">
+    <ng-content></ng-content>
+  </main>
+  
+  <footer class="layout-footer">
+    <ng-content select="[slot='footer']"></ng-content>
+  </footer>
+</div>

@@ -1,0 +1,26 @@
+@for (modal of getActiveModals(); track modal.id) {
+  <app-modal
+    [isOpen]="true"
+    [title]="modal.config.title || ''"
+    [showCloseButton]="modal.config.showCloseButton !== false"
+    [closeOnBackdrop]="modal.config.closeOnBackdrop !== false"
+    [closeOnEscape]="modal.config.closeOnEscape !== false"
+    (close)="handleClose(modal.id)"
+  >
+    <!-- Body -->
+    <div class="alert-modal__message">
+      {{ modal.config.message }}
+    </div>
+
+    <!-- Footer -->
+    <div slot="footer" class="alert-modal__footer">
+      <button
+        type="button"
+        [class]="modal.config.isDanger ? 'btn btn-secondary' : 'btn btn-primary'"
+        (click)="handleOk(modal.id)"
+      >
+        {{ modal.config.confirmText || 'OK' }}
+      </button>
+    </div>
+  </app-modal>
+}

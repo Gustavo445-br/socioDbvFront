@@ -1,0 +1,17 @@
+.alert-modal__message {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-4);
+}
+
+.alert-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 480px) {
+  .alert-modal__footer .btn {
+    width: 100%;
+  }
+}

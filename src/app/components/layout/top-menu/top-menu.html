@@ -1,0 +1,158 @@
+<nav class="top-menu" role="navigation" aria-label="Menu principal">
+  <div class="top-menu__container">
+    <!-- Logo / App Name -->
+    <div class="top-menu__brand">
+      @if (logo()) {
+        <img [src]="logo()" [alt]="appName() + ' logo'" class="top-menu__logo" />
+      }
+      <span class="top-menu__app-name">{{ appName() }}</span>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="top-menu__nav">
+      @for (link of navLinks(); track link.route) {
+        <a
+          [routerLink]="link.route"
+          routerLinkActive="top-menu__nav-link--active"
+          class="top-menu__nav-link"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+
+    <!-- Actions (Notifications + User) -->
+    <div class="top-menu__actions">
+      <!-- Notifications -->
+      @if (hasNotifications()) {
+        <div class="top-menu__action-item">
+          <button
+            type="button"
+            class="top-menu__icon-button"
+            (click)="toggleNotifications($event)"
+            [attr.aria-expanded]="isNotificationsOpen()"
+            aria-label="Notificações"
+          >
+            <svg class="top-menu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="top-menu__badge">{{ unreadNotificationsCount() }}</span>
+            }
+          </button>
+
+          <!-- Notifications Dropdown -->
+          @if (isNotificationsOpen()) {
+            <div class="top-menu__dropdown" role="menu">
+              <div class="top-menu__dropdown-header">
+                <h3>Notificações</h3>
+                @if (unreadNotificationsCount() > 0) {
+                  <span class="badge badge-primary">{{ unreadNotificationsCount() }} novas</span>
+                }
+              </div>
+              <div class="top-menu__dropdown-content">
+                @for (notification of notifications(); track notification.id) {
+                  <button
+                    type="button"
+                    class="top-menu__notification-item"
+                    [class.top-menu__notification-item--unread]="!notification.isRead"
+                    (click)="handleNotificationClick(notification)"
+                    role="menuitem"
+                  >
+                    <div class="top-menu__notification-title">{{ notification.title }}</div>
+                    <div class="top-menu__notification-message">{{ notification.message }}</div>
+                    <div class="top-menu__notification-time">{{ notification.time }}</div>
+                  </button>
+                } @empty {
+                  <div class="top-menu__dropdown-empty">Nenhuma notificação</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- User Menu -->
+      @if (hasUser()) {
+        <div class="top-menu__action-item">
+          <button
+            type="button"
+            class="top-menu__user-button"
+            (click)="toggleUserMenu($event)"
+            [attr.aria-expanded]="isUserMenuOpen()"
+            aria-label="Menu do usuário"
+          >
+            @if (user()?.avatar) {
+              <img [src]="user()!.avatar" [alt]="user()!.name" class="top-menu__avatar" />
+            } @else {
+              <div class="top-menu__avatar-initials">{{ userInitials() }}</div>
+            }
+            <svg class="top-menu__chevron" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!-- User Dropdown -->
+          @if (isUserMenuOpen()) {
+            <div class="top-menu__dropdown top-menu__dropdown--right" role="menu">
+              <div class="top-menu__dropdown-header">
+                <div class="top-menu__user-info">
+                  <div class="top-menu__user-name">{{ user()!.name }}</div>
+                  <div class="top-menu__user-email">{{ user()!.email }}</div>
+                </div>
+              </div>
+              <div class="top-menu__dropdown-divider"></div>
+              <div class="top-menu__dropdown-content">
+                @for (item of userMenuItems(); track item.label) {
+                  <button
+                    type="button"
+                    class="top-menu__menu-item"
+                    [class.top-menu__menu-item--danger]="item.isDanger"
+                    (click)="handleUserMenuItemClick(item)"
+                    role="menuitem"
+                  >
+                    {{ item.label }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Mobile Menu Toggle -->
+      <button
+        type="button"
+        class="top-menu__mobile-toggle"
+        (click)="toggleMobileMenu()"
+        [attr.aria-expanded]="isMobileMenuOpen()"
+        aria-label="Toggle menu"
+      >
+        <svg class="top-menu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          @if (isMobileMenuOpen()) {
+            <path d="M6 18L18 6M6 6l12 12"></path>
+          } @else {
+            <path d="M3 12h18M3 6h18M3 18h18"></path>
+          }
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  @if (isMobileMenuOpen()) {
+    <div class="top-menu__mobile-nav">
+      @for (link of navLinks(); track link.route) {
+        <a
+          [routerLink]="link.route"
+          routerLinkActive="top-menu__mobile-nav-link--active"
+          class="top-menu__mobile-nav-link"
+          (click)="toggleMobileMenu()"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+  }
+</nav>
