@@ -19,11 +19,14 @@ import { ModalService } from './services/modal/modal.service';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('socioDbvFront');
+  protected readonly title = signal('Sócio DBV');
 
   // Sample navigation links
   protected readonly navLinks = signal<NavLink[]>([
-    { label: 'Início', route: '/' },
+    { label: 'Sócios', route: '/socios' },
+    { label: 'Benefícios', route: '/beneficios' },
+    { label: 'Planos', route: '/planos' },
+    { label: 'Pagamentos', route: '/pagamentos' },
     { label: 'Dashboard', route: '/dashboard' },
     { label: 'Relatórios', route: '/reports' },
     { label: 'Configurações', route: '/settings' },

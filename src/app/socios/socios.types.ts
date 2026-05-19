@@ -1,4 +1,5 @@
 export interface Socio {
+planosSocios: any;
   id: number;
   nome: string;
   email: string;

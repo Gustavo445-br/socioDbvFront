@@ -1,6 +1,6 @@
-/* Botão Novo Sócio */
-.btn-novo-socio {
-  background-color: #007bff;
+/* Botão Novo Benefício */
+.btn-novo-beneficio {
+  background-color: #28a745;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -12,12 +12,12 @@
   transition: background-color 0.3s ease;
 }
 
-.btn-novo-socio:hover {
-  background-color: #0056b3;
+.btn-novo-beneficio:hover {
+  background-color: #218838;
 }
 
-.btn-novo-socio:active {
-  background-color: #004085;
+.btn-novo-beneficio:active {
+  background-color: #1e7e34;
 }
 
 /* Container do Formulário */
@@ -38,7 +38,7 @@
 }
 
 /* Formulário */
-.formulario-socio {
+.formulario-beneficio {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -57,7 +57,8 @@
   font-size: 14px;
 }
 
-.campo-formulario input {
+.campo-formulario input,
+.campo-formulario textarea {
   padding: 10px 12px;
   border: 1px solid #ced4da;
   border-radius: 4px;
@@ -65,18 +66,26 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.campo-formulario input:focus {
+.campo-formulario input:focus,
+.campo-formulario textarea:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: #28a745;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
 }
 
-.campo-formulario input.erro {
+.campo-formulario input.erro,
+.campo-formulario textarea.erro {
   border-color: #dc3545;
 }
 
-.campo-formulario input.erro:focus {
+.campo-formulario input.erro:focus,
+.campo-formulario textarea.erro:focus {
   box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
+.campo-formulario textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 /* Mensagens de Erro */
@@ -138,9 +147,12 @@
   background-color: #545b62;
 }
 
-/* Lista de Sócios */
-h2 {
+/* Lista de Benefícios */
+h1, h2 {
   color: #333;
+}
+
+h2 {
   margin-bottom: 16px;
   font-size: 20px;
 }
@@ -151,7 +163,7 @@ ul {
   margin: 0;
 }
 
-ul li {
+.beneficio-item {
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 6px;
@@ -161,26 +173,26 @@ ul li {
   position: relative;
 }
 
-.socio-info {
+.beneficio-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
-.socio-info strong {
+.beneficio-header {
+  margin-bottom: 8px;
+}
+
+.beneficio-header strong {
   font-size: 18px;
   color: #333;
 }
 
-.socio-info span {
+.descricao {
   color: #666;
   font-size: 14px;
-}
-
-.socio-info small {
-  color: #999;
-  font-size: 12px;
-  font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
 }
 
 /* Menu Dropdown - Aparece apenas ao clicar */
@@ -190,7 +202,7 @@ ul li {
   right: 8px;
 }
 
-.btn-menu-socio {
+.btn-menu-beneficio {
   background-color: #6c757d;
   color: white;
   border: none;
@@ -207,13 +219,13 @@ ul li {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.btn-menu-socio:hover,
-.btn-menu-socio.ativo {
+.btn-menu-beneficio:hover,
+.btn-menu-beneficio.ativo {
   background-color: #5a6268;
   transform: scale(1.1);
 }
 
-.btn-menu-socio:active {
+.btn-menu-beneficio:active {
   background-color: #545b62;
   transform: scale(0.95);
 }
@@ -274,179 +286,17 @@ ul li {
 
   .btn-criar,
   .btn-cancelar,
-  .btn-novo-socio {
+  .btn-novo-beneficio {
     width: 100%;
   }
-}
 
-.datas-plano {
+  .beneficio-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 10px;
-}
-
-.input-data {
-
-  padding: 6px 8px;
-
-  border-radius: 6px;
-
-  border: 1px solid #ccc;
-
-  font-size: 12px;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-planos {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.btn-fechar {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.lista-planos {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-#select-plano {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  outline: none;
-
-
-}
-
-.option-plano {
-  padding: 8px 12px;
-  border-bottom: 1px solid #f8f9fa;
-}
-
-.btn-salvar-plano {
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #22c55e;
-  color: white;
-
-  font-size: 15px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
-}
-
-.btn-salvar-plano:hover {
-  background: #16a34a;
-}
-
-.planos-container {
-
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-
-  margin-top: 12px;
-
-}
-
-.beneficio-badge {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  background: #eff6ff;
-
-  border: 1px solid #bfdbfe;
-
-  color: #1d4ed8;
-
-  padding: 6px 10px;
-
-  border-radius: 999px;
-
-  font-size: 13px;
-
-  font-weight: 500;
-
-}
-
-.btn-remover-beneficio {
-
-  border: none;
-
-  border-radius: 50%;
-
-  background: transparent;
-
-  background-color: rgba(255, 0, 0, 0.5);
-
-  cursor: pointer;
-
-  transition: 0.5s ease;
-
-  font-size: 15px;
-
-  margin-left: 6px;
-
-  height: 25px;
-
-  width: 25px;
-
-}
-
-.btn-remover-beneficio:hover {
-
-  transform: scale(1.15);
-
-  background-color: rgba(255, 0, 0, 0.8);
-
+  .beneficio-item {
+    padding: 12px;
+  }
 }

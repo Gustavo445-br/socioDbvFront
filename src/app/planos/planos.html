@@ -1,0 +1,245 @@
+<h1>Planos</h1>
+
+<button (click)="toggleFormulario()" class="btn-novo-plano">
+  Novo Plano
+</button>
+
+@if (mostrarFormulario()) {
+<div class="formulario-container">
+  <h2>{{ modoEdicao() ? 'Editar Plano' : 'Criar Novo Plano' }}</h2>
+  <form [formGroup]="formularioPlano" (submit)="criarPlano()" class="formulario-plano">
+
+    <div class="campo-formulario">
+      <label for="nome">Nome:</label>
+      <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome do plano"
+        [class.erro]="formularioPlano.get('nome')?.invalid && formularioPlano.get('nome')?.touched" />
+      @if (formularioPlano.get('nome')?.invalid && formularioPlano.get('nome')?.touched) {
+      <div class="erro-mensagem">
+        @if (formularioPlano.get('nome')?.errors?.['required']) {
+        Nome é obrigatório
+        }
+        @if (formularioPlano.get('nome')?.errors?.['minlength']) {
+        Nome deve ter pelo menos 2 caracteres
+        }
+      </div>
+      }
+    </div>
+
+    <div class="campo-formulario">
+      <label for="valor">Valor:</label>
+      <input id="valor" type="number" step="0.01" formControlName="valor" placeholder="Digite o valor do plano"
+        [class.erro]="formularioPlano.get('valor')?.invalid && formularioPlano.get('valor')?.touched" />
+      @if (formularioPlano.get('valor')?.invalid && formularioPlano.get('valor')?.touched) {
+      <div class="erro-mensagem">
+        @if (formularioPlano.get('valor')?.errors?.['required']) {
+        Valor é obrigatório
+        }
+        @if (formularioPlano.get('valor')?.errors?.['min']) {
+        Valor deve ser maior ou igual a 0
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Campo descrição oculto para compatibilidade com backend -->
+    <input type="hidden" formControlName="descricao">
+
+    <div class="botoes-formulario">
+      <button type="submit" class="btn-criar">
+        {{ modoEdicao() ? 'Atualizar Plano' : 'Criar Plano' }}
+      </button>
+      <button type="button" (click)="cancelarCriacao()" class="btn-cancelar">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+}
+
+<h2>Lista de Planos</h2>
+@if (planos().length === 0) {
+<p>Nenhum plano encontrado.</p>
+} @else {
+<ul>
+  @for (plano of planos(); track plano.id) {
+  <li class="plano-item">
+    <div class="datas-plano">
+
+    </div>
+    <div class="plano-info">
+
+      <div class="plano-header">
+
+        <strong>{{ plano.nome }}</strong>
+
+        <span class="plano-valor">
+          R$ {{ plano.valor.toFixed(2) }}
+        </span>
+
+      </div>
+
+      @if (plano.beneficios?.length) {
+
+      <div class="beneficios-container">
+
+        @for (beneficio of plano.beneficios; track beneficio.id) {
+
+        <div class="beneficio-badge">
+
+          <span>
+            {{ beneficio.nome }}
+          </span>
+
+          <button class="btn-remover-beneficio" (click)="abrirConfirmacao(
+      'Deseja apagar o benefício &quot;' + beneficio.nome + '&quot; mesmo?',
+      () => removerBeneficioDoPlano(plano.id, beneficio.id)
+    )">
+
+            🗑
+
+          </button>
+
+        </div>
+
+        }
+
+      </div>
+
+      }
+
+    </div>
+
+    <div class="menu-container">
+
+      <button (click)="toggleMenu(plano.id, $event)" class="btn-menu-plano" [class.ativo]="menuAberto() === plano.id"
+        title="Opções">
+
+        ⋮
+
+      </button>
+
+      @if (menuAberto() === plano.id) {
+
+      <div class="menu-dropdown" (click)="$event.stopPropagation()">
+
+        <button (click)="iniciarEdicao(plano)" class="menu-item editar">
+
+          ✏️ Editar
+
+        </button>
+
+        <button (click)="deletarPlano(plano)" class="menu-item deletar">
+
+          🗑️ Deletar
+
+        </button>
+
+        <button (click)="abrirModalBeneficios(plano)" class="menu-item add-beneficio">
+
+          ➕ Adicionar Benefício
+
+        </button>
+
+      </div>
+
+      }
+
+    </div>
+
+  </li>
+  }
+</ul>
+<p>{{ planos().length }} plano{{ planos().length > 1 ? 's' : '' }} encontrado{{ planos().length > 1 ? 's' : '' }}.</p>
+}
+
+@if (mostrarModalBeneficios()) {
+
+<div class="modal-overlay">
+
+  <div class="modal-beneficios">
+
+    <div class="modal-header">
+
+      <h2>
+        Benefícios do plano:
+        {{ planoSelecionado()?.nome }}
+      </h2>
+
+      <button class="btn-fechar" (click)="fecharModalBeneficios()">
+
+        ✖
+
+      </button>
+
+    </div>
+
+    <input type="text" placeholder="Pesquisar benefício..." class="input-pesquisa" [value]="pesquisaBeneficio()"
+      (input)="pesquisaBeneficio.set($any($event.target).value)" />
+
+    <div class="lista-beneficios">
+
+      @for (beneficio of beneficiosFiltrados(); track beneficio.id) {
+
+      <div class="beneficio-item">
+
+        <div>
+
+          <strong>{{ beneficio.nome }}</strong>
+
+          <p>{{ beneficio.descricao }}</p>
+
+          @if (beneficioJaAdicionado(beneficio.id)) {
+
+          <span class="beneficio-adicionado">
+            Já adicionado
+          </span>
+
+          }
+
+        </div>
+
+        <button class="btn-add-beneficio" [disabled]="beneficioJaAdicionado(beneficio.id)"
+          (click)="adicionarBeneficioAoPlano(planoSelecionado()!.id, beneficio.id)">
+
+          ➕
+
+        </button>
+
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
+
+}
+@if (mostrarConfirmacao()) {
+
+<div class="confirmacao-toast">
+
+  <p>
+    {{ mensagemConfirmacao() }}
+  </p>
+
+  <div class="confirmacao-botoes">
+
+    <button class="btn-cancelar-confirmacao" (click)="fecharConfirmacao()">
+
+      ❌ Cancelar
+
+    </button>
+
+    <button class="btn-confirmar" (click)="confirmarAcao()">
+
+      ✅ Sim
+
+    </button>
+
+  </div>
+
+</div>
+
+}

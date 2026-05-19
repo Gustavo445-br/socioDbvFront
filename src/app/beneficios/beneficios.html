@@ -1,0 +1,102 @@
+<h1>Benefícios</h1>
+
+<button (click)="toggleFormulario()" class="btn-novo-beneficio">
+  Novo Benefício
+</button>
+
+@if (mostrarFormulario()) {
+  <div class="formulario-container">
+    <h2>{{ modoEdicao() ? 'Editar Benefício' : 'Criar Novo Benefício' }}</h2>
+    <form [formGroup]="formularioBeneficio" (ngSubmit)="criarBeneficio()" class="formulario-beneficio">
+
+      <div class="campo-formulario">
+        <label for="nome">Nome:</label>
+        <input
+          id="nome"
+          type="text"
+          formControlName="nome"
+          placeholder="Digite o nome do benefício"
+          [class.erro]="formularioBeneficio.get('nome')?.invalid && formularioBeneficio.get('nome')?.touched"
+        />
+        @if (formularioBeneficio.get('nome')?.invalid && formularioBeneficio.get('nome')?.touched) {
+          <div class="erro-mensagem">
+            @if (formularioBeneficio.get('nome')?.errors?.['required']) {
+              Nome é obrigatório
+            }
+            @if (formularioBeneficio.get('nome')?.errors?.['minlength']) {
+              Nome deve ter pelo menos 2 caracteres
+            }
+          </div>
+        }
+      </div>
+
+      <div class="campo-formulario">
+        <label for="descricao">Descrição:</label>
+        <textarea
+          id="descricao"
+          formControlName="descricao"
+          placeholder="Digite a descrição do benefício"
+          rows="3"
+          [class.erro]="formularioBeneficio.get('descricao')?.invalid && formularioBeneficio.get('descricao')?.touched"
+        ></textarea>
+        @if (formularioBeneficio.get('descricao')?.invalid && formularioBeneficio.get('descricao')?.touched) {
+          <div class="erro-mensagem">
+            @if (formularioBeneficio.get('descricao')?.errors?.['required']) {
+              Descrição é obrigatória
+            }
+            @if (formularioBeneficio.get('descricao')?.errors?.['minlength']) {
+              Descrição deve ter pelo menos 10 caracteres
+            }
+          </div>
+        }
+      </div>
+
+      <div class="botoes-formulario">
+        <button type="submit" [disabled]="formularioBeneficio.invalid" class="btn-criar">
+          {{ modoEdicao() ? 'Atualizar Benefício' : 'Criar Benefício' }}
+        </button>
+        <button type="button" (click)="cancelarCriacao()" class="btn-cancelar">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+}
+
+<h2>Lista de Benefícios</h2>
+@if (beneficios().length === 0) {
+  <p>Nenhum benefício encontrado.</p>
+} @else {
+  <ul>
+    @for (beneficio of beneficios(); track beneficio.id) {
+      <li class="beneficio-item">
+        <div class="beneficio-info">
+          <div class="beneficio-header">
+            <strong>{{ beneficio.nome }}</strong>
+          </div>
+          <p class="descricao">{{ beneficio.descricao }}</p>
+        </div>
+        <div class="menu-container">
+          <button
+            (click)="toggleMenu(beneficio.id, $event)"
+            class="btn-menu-beneficio"
+            [class.ativo]="menuAberto() === beneficio.id"
+            title="Opções">
+            ⋮
+          </button>
+          @if (menuAberto() === beneficio.id) {
+            <div class="menu-dropdown" (click)="$event.stopPropagation()">
+              <button (click)="iniciarEdicao(beneficio)" class="menu-item editar">
+                ✏️ Editar
+              </button>
+              <button (click)="deletarBeneficio(beneficio)" class="menu-item deletar">
+                🗑️ Deletar
+              </button>
+            </div>
+          }
+        </div>
+      </li>
+    }
+  </ul>
+  <p>{{ beneficios().length }} benefício{{ beneficios().length > 1 ? 's' : '' }} encontrado{{ beneficios().length > 1 ? 's' : '' }}.</p>
+}

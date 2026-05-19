@@ -16,4 +16,13 @@ export class SociosService {
     criarSocio(socio: CriacaoSocioDTO): Observable<Socio> {
         return this.http.post<Socio>('http://localhost:3000/socios', socio);
      }
+
+    atualizarSocio(id: number, socio: CriacaoSocioDTO): Observable<Socio> {
+        return this.http.patch<Socio>(`http://localhost:3000/socios/${id}`, socio);
+    }
+
+    deletarSocio(id: number): Observable<void> {
+        return this.http.delete<void>(`http://localhost:3000/socios/${id}`);
+    }
+    
 }
