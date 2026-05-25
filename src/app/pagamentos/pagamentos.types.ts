@@ -1,10 +1,11 @@
 export interface Pagamento {
+  planoSocioId: any;
 
   id: number;
 
   valor: number;
 
-  data: string;
+  data: Date;
 
   parcela: number;
 
@@ -39,5 +40,29 @@ export interface CriacaoPagamentoDTO {
   parcela: number;
 
   mes: number;
+
+}
+
+export interface PlanoSocio {
+
+  id: number;
+
+  dataInicio: string;
+
+  dataFim: string | null;
+
+  plano: {
+    id: number;
+    nome: string;
+    valor: number;
+  };
+
+  socio: {
+    id: number;
+    nome: string;
+    email: string;
+    telefone: string;
+    codigoSocio: string;
+  };
 
 }

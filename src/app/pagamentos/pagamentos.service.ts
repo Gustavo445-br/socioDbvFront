@@ -21,11 +21,21 @@ export class PagamentosService {
     private readonly http: HttpClient
   ) {}
 
-  buscarTodosOsPagamentos():
+  buscarPagamentos():
     Observable<Pagamento[]> {
 
     return this.http.get<Pagamento[]>(
       this.apiUrl
+    );
+
+  }
+
+  buscarPagamentoPorId(
+    id: number
+  ): Observable<Pagamento> {
+
+    return this.http.get<Pagamento>(
+      `${this.apiUrl}/${id}`
     );
 
   }
@@ -36,6 +46,18 @@ export class PagamentosService {
 
     return this.http.post<Pagamento>(
       this.apiUrl,
+      pagamento
+    );
+
+  }
+
+  atualizarPagamento(
+    id: number,
+    pagamento: CriacaoPagamentoDTO
+  ): Observable<Pagamento> {
+
+    return this.http.patch<Pagamento>(
+      `${this.apiUrl}/${id}`,
       pagamento
     );
 
