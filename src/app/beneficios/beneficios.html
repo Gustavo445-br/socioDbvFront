@@ -1,10 +1,16 @@
-<h1>Benefícios</h1>
+<div class="page-container">
 
-<button (click)="toggleFormulario()" class="btn-novo-beneficio">
-  Novo Benefício
-</button>
+  <div class="page-header">
+    <div class="page-header-info">
+      <h1 class="page-titulo">Benefícios</h1>
+      <p class="page-subtitulo">Gerencie os benefícios dos planos</p>
+    </div>
+    <button (click)="toggleFormulario()" class="btn-novo-beneficio">
+      + Novo Benefício
+    </button>
+  </div>
 
-@if (mostrarFormulario()) {
+  @if (mostrarFormulario()) {
   <div class="formulario-container">
     <h2>{{ modoEdicao() ? 'Editar Benefício' : 'Criar Novo Benefício' }}</h2>
     <form [formGroup]="formularioBeneficio" (ngSubmit)="criarBeneficio()" class="formulario-beneficio">
@@ -61,42 +67,45 @@
       </div>
     </form>
   </div>
-}
+  }
 
-<h2>Lista de Benefícios</h2>
-@if (beneficios().length === 0) {
-  <p>Nenhum benefício encontrado.</p>
-} @else {
-  <ul>
-    @for (beneficio of beneficios(); track beneficio.id) {
-      <li class="beneficio-item">
-        <div class="beneficio-info">
-          <div class="beneficio-header">
-            <strong>{{ beneficio.nome }}</strong>
-          </div>
-          <p class="descricao">{{ beneficio.descricao }}</p>
-        </div>
-        <div class="menu-container">
-          <button
-            (click)="toggleMenu(beneficio.id, $event)"
-            class="btn-menu-beneficio"
-            [class.ativo]="menuAberto() === beneficio.id"
-            title="Opções">
-            ⋮
-          </button>
-          @if (menuAberto() === beneficio.id) {
-            <div class="menu-dropdown" (click)="$event.stopPropagation()">
-              <button (click)="iniciarEdicao(beneficio)" class="menu-item editar">
-                ✏️ Editar
-              </button>
-              <button (click)="deletarBeneficio(beneficio)" class="menu-item deletar">
-                🗑️ Deletar
-              </button>
+  <h2>Lista de Benefícios</h2>
+
+  @if (beneficios().length === 0) {
+    <p>Nenhum benefício encontrado.</p>
+  } @else {
+    <ul>
+      @for (beneficio of beneficios(); track beneficio.id) {
+        <li class="beneficio-item">
+          <div class="beneficio-info">
+            <div class="beneficio-header">
+              <strong>{{ beneficio.nome }}</strong>
             </div>
-          }
-        </div>
-      </li>
-    }
-  </ul>
-  <p>{{ beneficios().length }} benefício{{ beneficios().length > 1 ? 's' : '' }} encontrado{{ beneficios().length > 1 ? 's' : '' }}.</p>
-}
+            <p class="descricao">{{ beneficio.descricao }}</p>
+          </div>
+          <div class="menu-container">
+            <button
+              (click)="toggleMenu(beneficio.id, $event)"
+              class="btn-menu-beneficio"
+              [class.ativo]="menuAberto() === beneficio.id"
+              title="Opções">
+              ⋮
+            </button>
+            @if (menuAberto() === beneficio.id) {
+              <div class="menu-dropdown" (click)="$event.stopPropagation()">
+                <button (click)="iniciarEdicao(beneficio)" class="menu-item editar">
+                  ✏️ Editar
+                </button>
+                <button (click)="deletarBeneficio(beneficio)" class="menu-item deletar">
+                  🗑️ Deletar
+                </button>
+              </div>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+    <p>{{ beneficios().length }} benefício{{ beneficios().length > 1 ? 's' : '' }} encontrado{{ beneficios().length > 1 ? 's' : '' }}.</p>
+  }
+
+</div>

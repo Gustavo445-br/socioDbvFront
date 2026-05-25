@@ -1,237 +1,43 @@
-<h1>Sócios</h1>
+<div class="page-container">
 
-<button (click)="toggleFormulario()" class="btn-novo-socio">
-  Novo Sócio
-</button>
-
-@if (mostrarFormulario()) {
-
-<div class="formulario-container">
-
-  <h2>
-    {{ modoEdicao() ? 'Editar Sócio' : 'Criar Novo Sócio' }}
-  </h2>
-
-  <form [formGroup]="formularioSocio" (ngSubmit)="criarSocio()" class="formulario-socio">
-
-    <div class="campo-formulario">
-
-      <label for="nome">Nome:</label>
-
-      <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome completo"
-        [class.erro]="formularioSocio.get('nome')?.invalid && formularioSocio.get('nome')?.touched" />
-
-      @if (formularioSocio.get('nome')?.invalid && formularioSocio.get('nome')?.touched) {
-
-      <div class="erro-mensagem">
-
-        @if (formularioSocio.get('nome')?.errors?.['required']) {
-        Nome é obrigatório
-        }
-
-        @if (formularioSocio.get('nome')?.errors?.['minlength']) {
-        Nome deve ter pelo menos 2 caracteres
-        }
-
-      </div>
-
-      }
-
+  <div class="page-header">
+    <div class="page-header-info">
+      <h1 class="page-titulo">Sócios</h1>
+      <p class="page-subtitulo">Gerencie os sócios da associação</p>
     </div>
+    <button (click)="toggleFormulario()" class="btn-novo-socio">
+      + Novo Sócio
+    </button>
+  </div>
 
-    <div class="campo-formulario">
+  @if (mostrarFormulario()) {
 
-      <label for="email">Email:</label>
+  <div class="formulario-container">
 
-      <input id="email" type="email" formControlName="email" placeholder="Digite o email"
-        [class.erro]="formularioSocio.get('email')?.invalid && formularioSocio.get('email')?.touched" />
+    <h2>
+      {{ modoEdicao() ? 'Editar Sócio' : 'Criar Novo Sócio' }}
+    </h2>
 
-      @if (formularioSocio.get('email')?.invalid && formularioSocio.get('email')?.touched) {
+    <form [formGroup]="formularioSocio" (ngSubmit)="criarSocio()" class="formulario-socio">
 
-      <div class="erro-mensagem">
+      <div class="campo-formulario">
 
-        @if (formularioSocio.get('email')?.errors?.['required']) {
-        Email é obrigatório
-        }
+        <label for="nome">Nome:</label>
 
-        @if (formularioSocio.get('email')?.errors?.['email']) {
-        Email deve ser válido
-        }
+        <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome completo"
+          [class.erro]="formularioSocio.get('nome')?.invalid && formularioSocio.get('nome')?.touched" />
 
-      </div>
+        @if (formularioSocio.get('nome')?.invalid && formularioSocio.get('nome')?.touched) {
 
-      }
+        <div class="erro-mensagem">
 
-    </div>
+          @if (formularioSocio.get('nome')?.errors?.['required']) {
+          Nome é obrigatório
+          }
 
-    <div class="campo-formulario">
-
-      <label for="telefone">Telefone:</label>
-
-      <input id="telefone" type="text" formControlName="telefone" placeholder="(11) 99999-9999"
-        [class.erro]="formularioSocio.get('telefone')?.invalid && formularioSocio.get('telefone')?.touched" />
-
-      @if (formularioSocio.get('telefone')?.invalid && formularioSocio.get('telefone')?.touched) {
-
-      <div class="erro-mensagem">
-
-        @if (formularioSocio.get('telefone')?.errors?.['required']) {
-        Telefone é obrigatório
-        }
-
-        @if (formularioSocio.get('telefone')?.errors?.['pattern']) {
-        Formato: (XX) XXXXX-XXXX
-        }
-
-      </div>
-
-      }
-
-    </div>
-
-    <div class="botoes-formulario">
-
-      <button type="submit" [disabled]="formularioSocio.invalid" class="btn-criar">
-
-        {{ modoEdicao() ? 'Atualizar Sócio' : 'Criar Sócio' }}
-
-      </button>
-
-      <button type="button" (click)="cancelarCriacao()" class="btn-cancelar">
-
-        Cancelar
-
-      </button>
-
-    </div>
-
-  </form>
-
-</div>
-
-}
-
-<h2>Lista de Sócios</h2>
-
-@if (socios().length === 0) {
-
-<p>Nenhum sócio encontrado.</p>
-
-} @else {
-
-<ul>
-
-  @for (socio of socios(); track socio.id) {
-
-  <li class="socio-item">
-    <div class="planos-container">
-
-      @for (planoSocio of socio.planosSocios; track planoSocio.id) {
-
-      <div class="beneficio-badge">
-
-        <span>
-          Plano: {{ planoSocio.plano.nome }}
-        </span>
-
-        <small>
-          Código: {{ socio.codigoSocio }}
-        </small>
-
-        <button class="btn-remover-beneficio" (click)="removerPlanoDoSocio(planoSocio.id)">
-          ✖
-        </button>
-
-      </div>
-
-      }
-
-    </div>
-    <div class="socio-info">
-
-      <strong>{{ socio.nome }}</strong>
-
-      <span>{{ socio.email }}</span>
-
-      <span>{{ socio.telefone }}</span>
-
-      <small>
-        Código: {{ socio.codigoSocio }}
-      </small>
-
-    </div>
-
-    <div class="menu-container">
-
-      <button (click)="toggleMenu(socio.id, $event)" class="btn-menu-socio" [class.ativo]="menuAberto() === socio.id">
-
-        ⋮
-
-      </button>
-
-      @if (menuAberto() === socio.id) {
-
-      <div class="menu-dropdown" (click)="$event.stopPropagation()">
-
-        <button (click)="iniciarEdicao(socio)" class="menu-item editar">
-
-          ✏️ Editar
-
-        </button>
-
-        <button (click)="deletarSocio(socio)" class="menu-item deletar">
-
-          🗑️ Deletar
-
-        </button>
-
-        <button (click)="abrirModalPlanos(socio)" class="menu-item add-plano">
-
-          ➕ Adicionar Plano
-
-        </button>
-        @if (mostrarModalPlanos()) {
-
-        <div class="modal-overlay">
-
-          <div class="modal-planos">
-
-            <div class="modal-header">
-
-              <h2>
-                Planos de:
-                {{ socioSelecionado()?.nome }}
-              </h2>
-
-              <button class="btn-fechar" (click)="fecharModalPlanos()">
-                ✖
-              </button>
-
-            </div>
-
-            <div class="lista-planos">
-
-              <select #planoSelect id="select-plano">
-
-                @for (plano of planos(); track plano.id) {
-
-                <option [value]="plano.id">
-                  {{ plano.nome }}
-                </option>
-
-                }
-
-              </select>
-
-            </div>
-
-            <button class="btn-salvar-plano" (click)="adicionarPlanoAoSocio(+planoSelect.value, +socio.id)">
-              💾 Salvar Plano
-            </button>
-
-          </div>
-
-
+          @if (formularioSocio.get('nome')?.errors?.['minlength']) {
+          Nome deve ter pelo menos 2 caracteres
+          }
 
         </div>
 
@@ -239,20 +45,220 @@
 
       </div>
 
-      }
+      <div class="campo-formulario">
 
-    </div>
+        <label for="email">Email:</label>
 
-  </li>
+        <input id="email" type="email" formControlName="email" placeholder="Digite o email"
+          [class.erro]="formularioSocio.get('email')?.invalid && formularioSocio.get('email')?.touched" />
+
+        @if (formularioSocio.get('email')?.invalid && formularioSocio.get('email')?.touched) {
+
+        <div class="erro-mensagem">
+
+          @if (formularioSocio.get('email')?.errors?.['required']) {
+          Email é obrigatório
+          }
+
+          @if (formularioSocio.get('email')?.errors?.['email']) {
+          Email deve ser válido
+          }
+
+        </div>
+
+        }
+
+      </div>
+
+      <div class="campo-formulario">
+
+        <label for="telefone">Telefone:</label>
+
+        <input id="telefone" type="text" formControlName="telefone" placeholder="(11) 99999-9999"
+          [class.erro]="formularioSocio.get('telefone')?.invalid && formularioSocio.get('telefone')?.touched" />
+
+        @if (formularioSocio.get('telefone')?.invalid && formularioSocio.get('telefone')?.touched) {
+
+        <div class="erro-mensagem">
+
+          @if (formularioSocio.get('telefone')?.errors?.['required']) {
+          Telefone é obrigatório
+          }
+
+          @if (formularioSocio.get('telefone')?.errors?.['pattern']) {
+          Formato: (XX) XXXXX-XXXX
+          }
+
+        </div>
+
+        }
+
+      </div>
+
+      <div class="botoes-formulario">
+
+        <button type="submit" [disabled]="formularioSocio.invalid" class="btn-criar">
+
+          {{ modoEdicao() ? 'Atualizar Sócio' : 'Criar Sócio' }}
+
+        </button>
+
+        <button type="button" (click)="cancelarCriacao()" class="btn-cancelar">
+
+          Cancelar
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
 
   }
 
-</ul>
+  <h2>Lista de Sócios</h2>
 
-<p>
-  {{ socios().length }}
-  sócio{{ socios().length > 1 ? 's' : '' }}
-  encontrado{{ socios().length > 1 ? 's' : '' }}.
-</p>
+  @if (socios().length === 0) {
 
-}
+  <p>Nenhum sócio encontrado.</p>
+
+  } @else {
+
+  <ul>
+
+    @for (socio of socios(); track socio.id) {
+
+    <li class="socio-item">
+      <div class="planos-container">
+
+        @for (planoSocio of socio.planosSocios; track planoSocio.id) {
+
+        <div class="beneficio-badge">
+
+          <span>
+            Plano: {{ planoSocio.plano.nome }}
+          </span>
+
+          <small>
+            Código: {{ socio.codigoSocio }}
+          </small>
+
+          <button class="btn-remover-beneficio" (click)="removerPlanoDoSocio(planoSocio.id)">
+            ✖
+          </button>
+
+        </div>
+
+        }
+
+      </div>
+      <div class="socio-info">
+
+        <strong>{{ socio.nome }}</strong>
+
+        <span>{{ socio.email }}</span>
+
+        <span>{{ socio.telefone }}</span>
+
+        <small>
+          Código: {{ socio.codigoSocio }}
+        </small>
+
+      </div>
+
+      <div class="menu-container">
+
+        <button (click)="toggleMenu(socio.id, $event)" class="btn-menu-socio" [class.ativo]="menuAberto() === socio.id">
+
+          ⋮
+
+        </button>
+
+        @if (menuAberto() === socio.id) {
+
+        <div class="menu-dropdown" (click)="$event.stopPropagation()">
+
+          <button (click)="iniciarEdicao(socio)" class="menu-item editar">
+
+            ✏️ Editar
+
+          </button>
+
+          <button (click)="deletarSocio(socio)" class="menu-item deletar">
+
+            🗑️ Deletar
+
+          </button>
+
+          <button (click)="abrirModalPlanos(socio)" class="menu-item add-plano">
+
+            ➕ Adicionar Plano
+
+          </button>
+          @if (mostrarModalPlanos()) {
+
+          <div class="modal-overlay">
+
+            <div class="modal-planos">
+
+              <div class="modal-header">
+
+                <h2>
+                  Planos de:
+                  {{ socioSelecionado()?.nome }}
+                </h2>
+
+                <button class="btn-fechar" (click)="fecharModalPlanos()">
+                  ✖
+                </button>
+
+              </div>
+
+              <div class="lista-planos">
+
+                <select #planoSelect id="select-plano">
+
+                  @for (plano of planos(); track plano.id) {
+
+                  <option [value]="plano.id">
+                    {{ plano.nome }}
+                  </option>
+
+                  }
+
+                </select>
+
+              </div>
+
+              <button class="btn-salvar-plano" (click)="adicionarPlanoAoSocio(+planoSelect.value, +socio.id)">
+                💾 Salvar Plano
+              </button>
+
+            </div>
+
+          </div>
+
+          }
+
+        </div>
+
+        }
+
+      </div>
+
+    </li>
+
+    }
+
+  </ul>
+
+  <p>
+    {{ socios().length }}
+    sócio{{ socios().length > 1 ? 's' : '' }}
+    encontrado{{ socios().length > 1 ? 's' : '' }}.
+  </p>
+
+  }
+
+</div>

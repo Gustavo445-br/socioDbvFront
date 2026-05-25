@@ -602,3 +602,40 @@ p {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
+
+/* ===== Page Layout ===== */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    flex-wrap: wrap;
+}
+
+.page-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.page-titulo {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: var(--line-height-tight);
+}
+
+.page-subtitulo {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+}

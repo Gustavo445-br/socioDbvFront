@@ -1,86 +1,75 @@
+/* ============================================
+   BENEFÍCIOS
+   ============================================ */
+
 /* Botão Novo Benefício */
 .btn-novo-beneficio {
-  background-color: #28a745;
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
   border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+  align-self: flex-start;
 }
 
 .btn-novo-beneficio:hover {
-  background-color: #218838;
-}
-
-.btn-novo-beneficio:active {
-  background-color: #1e7e34;
+  background-color: var(--color-primary-dark);
 }
 
 /* Container do Formulário */
 .formulario-container {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
 }
 
 .formulario-container h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
   margin-top: 0;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 24px;
+  margin-bottom: var(--spacing-5);
 }
 
 /* Formulário */
 .formulario-beneficio {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-4);
 }
 
-/* Campos do Formulário */
+/* Campos */
 .campo-formulario {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-2);
 }
 
 .campo-formulario label {
-  font-weight: 500;
-  color: #555;
-  font-size: 14px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
 }
 
 .campo-formulario input,
 .campo-formulario textarea {
-  padding: 10px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.campo-formulario input:focus,
-.campo-formulario textarea:focus {
-  outline: none;
-  border-color: #28a745;
-  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
-}
-
-.campo-formulario input.erro,
-.campo-formulario textarea.erro {
-  border-color: #dc3545;
-}
-
-.campo-formulario input.erro:focus,
-.campo-formulario textarea.erro:focus {
-  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  padding: var(--spacing-3) var(--spacing-4);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .campo-formulario textarea {
@@ -88,196 +77,205 @@
   min-height: 80px;
 }
 
+.campo-formulario input:focus,
+.campo-formulario textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.campo-formulario input.erro,
+.campo-formulario textarea.erro {
+  border-color: var(--color-danger);
+}
+
+.campo-formulario input.erro:focus,
+.campo-formulario textarea.erro:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-light);
+}
+
 /* Mensagens de Erro */
 .erro-mensagem {
-  color: #dc3545;
-  font-size: 14px;
-  margin-top: 4px;
+  font-size: var(--text-sm);
+  color: var(--color-danger);
 }
 
 /* Botões do Formulário */
 .botoes-formulario {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-2);
 }
 
 .btn-criar {
-  background-color: #28a745;
-  color: white;
+  padding: var(--spacing-3) var(--spacing-6);
+  background-color: var(--color-success);
+  color: var(--color-text-inverse);
   border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-fast);
 }
 
 .btn-criar:hover:not(:disabled) {
-  background-color: #218838;
-}
-
-.btn-criar:active:not(:disabled) {
-  background-color: #1e7e34;
+  background-color: var(--color-success-dark);
 }
 
 .btn-criar:disabled {
-  background-color: #6c757d;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .btn-cancelar {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
+  padding: var(--spacing-3) var(--spacing-6);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: all var(--transition-fast);
 }
 
 .btn-cancelar:hover {
-  background-color: #5a6268;
+  background-color: var(--color-neutral-100);
+  border-color: var(--color-border-dark);
 }
 
-.btn-cancelar:active {
-  background-color: #545b62;
-}
-
-/* Lista de Benefícios */
+/* Seção h2 */
 h1, h2 {
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 h2 {
-  margin-bottom: 16px;
-  font-size: 20px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-4);
 }
 
+/* Lista */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
 }
 
 .beneficio-item {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  padding: 16px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-4) var(--spacing-5);
+  box-shadow: var(--shadow-sm);
   position: relative;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.beneficio-item:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .beneficio-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-2);
+  padding-right: var(--spacing-10);
 }
 
 .beneficio-header {
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .beneficio-header strong {
-  font-size: 18px;
-  color: #333;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .descricao {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
-/* Menu Dropdown - Aparece apenas ao clicar */
+/* Menu Dropdown */
 .menu-container {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
 }
 
 .btn-menu-beneficio {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 50%;
   width: 32px;
   height: 32px;
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-secondary);
   cursor: pointer;
   font-size: 18px;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color var(--transition-fast);
 }
 
 .btn-menu-beneficio:hover,
 .btn-menu-beneficio.ativo {
-  background-color: #5a6268;
-  transform: scale(1.1);
-}
-
-.btn-menu-beneficio:active {
-  background-color: #545b62;
-  transform: scale(0.95);
+  background-color: var(--color-neutral-200);
 }
 
 .menu-dropdown {
   position: absolute;
-  bottom: 40px;
+  top: 36px;
   right: 0;
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  min-width: 120px;
-  z-index: 1000;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  min-width: 150px;
+  z-index: var(--z-dropdown);
   overflow: hidden;
 }
 
 .menu-item {
   display: block;
   width: 100%;
-  padding: 10px 12px;
+  padding: var(--spacing-3) var(--spacing-4);
   background: none;
   border: none;
   text-align: left;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
-  border-bottom: 1px solid #f8f9fa;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-fast);
 }
 
 .menu-item:hover {
-  background-color: #f8f9fa;
+  background-color: var(--color-neutral-50);
 }
 
 .menu-item.editar:hover {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
 }
 
 .menu-item.deletar:hover {
-  background-color: #ffebee;
-  color: #d32f2f;
+  background-color: var(--color-danger-light);
+  color: var(--color-danger-dark);
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
   .formulario-container {
-    padding: 16px;
+    padding: var(--spacing-4);
   }
 
   .botoes-formulario {
@@ -288,15 +286,5 @@ ul {
   .btn-cancelar,
   .btn-novo-beneficio {
     width: 100%;
-  }
-
-  .beneficio-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .beneficio-item {
-    padding: 12px;
   }
 }
