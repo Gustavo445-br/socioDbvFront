@@ -1,0 +1,350 @@
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="dashboard-header-info">
+      <h1 class="dashboard-titulo">Dashboard</h1>
+      <p class="dashboard-subtitulo">Visão geral da sua associação</p>
+    </div>
+    <div class="dashboard-header-actions">
+      <span class="dashboard-data-atualizacao">
+        Atualizado em {{ dataAtualizacao() | date:'dd/MM/yyyy HH:mm' }}
+      </span>
+      <button class="btn btn-outline btn-sm" (click)="carregarTodos()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        Atualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  @if (carregandoResumo()) {
+    <div class="kpi-grid">
+      @for (i of skeletonRange; track i) {
+        <div class="kpi-card kpi-skeleton">
+          <div class="skeleton-icon"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line skeleton-line-sm"></div>
+            <div class="skeleton-line skeleton-line-lg"></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (erroResumo()) {
+    <div class="erro-bloco">
+      <span class="erro-icone">⚠</span>
+      <p>Não foi possível carregar o resumo.</p>
+      <button class="btn btn-outline btn-sm" (click)="carregarResumo()">Tentar novamente</button>
+    </div>
+  } @else if (resumo()) {
+    <div class="kpi-grid">
+
+      <!-- Total de Sócios -->
+      <div class="kpi-card">
+        <div class="kpi-icone kpi-icone-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Total de Sócios</span>
+          <span class="kpi-numero">{{ resumo()!.totalSocios }}</span>
+          <span class="kpi-detalhe">{{ resumo()!.totalPlanos }} planos disponíveis</span>
+        </div>
+      </div>
+
+      <!-- Sócios Ativos -->
+      <div class="kpi-card">
+        <div class="kpi-icone kpi-icone-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Sócios Ativos</span>
+          <span class="kpi-numero">{{ resumo()!.sociosAtivos }}</span>
+          <span class="kpi-detalhe">{{ taxaAtividade() }}% do total</span>
+        </div>
+      </div>
+
+      <!-- Inadimplentes -->
+      <div class="kpi-card kpi-card-alerta">
+        <div class="kpi-icone kpi-icone-red">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Inadimplentes</span>
+          <span class="kpi-numero kpi-numero-alerta">{{ resumo()!.inadimplentes }}</span>
+          <span class="kpi-detalhe">sem pagamento no mês</span>
+        </div>
+      </div>
+
+      <!-- Receita do Mês -->
+      <div class="kpi-card">
+        <div class="kpi-icone kpi-icone-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Receita do Mês</span>
+          <span class="kpi-numero kpi-numero-moeda">{{ formatarMoeda(resumo()!.receitaMes) }}</span>
+          <span class="kpi-detalhe">pagamentos recebidos</span>
+        </div>
+      </div>
+
+      <!-- Receita Anual -->
+      <div class="kpi-card">
+        <div class="kpi-icone kpi-icone-purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Receita Anual</span>
+          <span class="kpi-numero kpi-numero-moeda">{{ formatarMoeda(resumo()!.receitaAnual) }}</span>
+          <span class="kpi-detalhe">acumulado no ano</span>
+        </div>
+      </div>
+
+      <!-- Novos Sócios no Mês -->
+      <div class="kpi-card">
+        <div class="kpi-icone kpi-icone-teal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <line x1="19" y1="8" x2="19" y2="14"></line>
+            <line x1="22" y1="11" x2="16" y2="11"></line>
+          </svg>
+        </div>
+        <div class="kpi-conteudo">
+          <span class="kpi-rotulo">Novos Sócios</span>
+          <span class="kpi-numero">{{ resumo()!.novosSociosMes }}</span>
+          <span class="kpi-detalhe">cadastrados este mês</span>
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- Gráficos -->
+  <div class="graficos-grid">
+
+    <!-- Receita Mensal -->
+    <div class="card grafico-card">
+      <div class="card-cabecalho">
+        <h3 class="card-titulo">Receita dos Últimos 6 Meses</h3>
+        @if (!carregandoReceita() && !erroReceita()) {
+          <span class="card-subtitulo">valores em R$</span>
+        }
+      </div>
+
+      @if (carregandoReceita()) {
+        <div class="grafico-skeleton">
+          <div class="barra-skeleton" style="height: 60%"></div>
+          <div class="barra-skeleton" style="height: 80%"></div>
+          <div class="barra-skeleton" style="height: 45%"></div>
+          <div class="barra-skeleton" style="height: 90%"></div>
+          <div class="barra-skeleton" style="height: 70%"></div>
+          <div class="barra-skeleton" style="height: 55%"></div>
+        </div>
+      } @else if (erroReceita()) {
+        <div class="erro-inline">
+          <p>Erro ao carregar dados.</p>
+          <button class="btn btn-outline btn-sm" (click)="carregarReceitaMensal()">Tentar novamente</button>
+        </div>
+      } @else if (receitaMensal().length === 0) {
+        <div class="vazio-inline">Nenhum dado de receita disponível.</div>
+      } @else {
+        <div class="grafico-barras">
+          @for (item of receitaMensal(); track item.mes) {
+            <div class="coluna-barra">
+              <span class="barra-valor-topo">{{ formatarMoeda(item.valor) }}</span>
+              <div class="barra-wrapper">
+                <div
+                  class="barra-preenchimento"
+                  [style.height]="alturaBarra(item.valor)"
+                ></div>
+              </div>
+              <span class="barra-rotulo">{{ item.mes }}</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Sócios por Plano -->
+    <div class="card grafico-card">
+      <div class="card-cabecalho">
+        <h3 class="card-titulo">Distribuição por Plano</h3>
+        @if (!carregandoPlanos() && !erroPlanos()) {
+          <span class="card-subtitulo">% de sócios por plano</span>
+        }
+      </div>
+
+      @if (carregandoPlanos()) {
+        <div class="planos-skeleton">
+          @for (i of [1,2,3]; track i) {
+            <div class="plano-skeleton-linha">
+              <div class="skeleton-line skeleton-line-sm" style="width: 30%"></div>
+              <div class="skeleton-barra-h"></div>
+            </div>
+          }
+        </div>
+      } @else if (erroPlanos()) {
+        <div class="erro-inline">
+          <p>Erro ao carregar dados.</p>
+          <button class="btn btn-outline btn-sm" (click)="carregarSociosPorPlano()">Tentar novamente</button>
+        </div>
+      } @else if (sociosPorPlano().length === 0) {
+        <div class="vazio-inline">Nenhum plano com sócios cadastrados.</div>
+      } @else {
+        <div class="planos-lista">
+          @for (item of sociosPorPlano(); track item.planoId; let i = $index) {
+            <div class="plano-linha">
+              <div class="plano-linha-info">
+                <div class="plano-ponto" [style.background-color]="corPlano(i)"></div>
+                <span class="plano-nome">{{ item.planoNome }}</span>
+                <span class="plano-qtd">{{ item.quantidade }} sócio{{ item.quantidade !== 1 ? 's' : '' }}</span>
+              </div>
+              <div class="plano-barra-container">
+                <div
+                  class="plano-barra-fill"
+                  [style.width.%]="item.percentual"
+                  [style.background-color]="corPlano(i)"
+                ></div>
+              </div>
+              <span class="plano-percentual">{{ item.percentual | number:'1.0-1' }}%</span>
+            </div>
+          }
+        </div>
+
+        <div class="planos-legenda">
+          @for (item of sociosPorPlano(); track item.planoId; let i = $index) {
+            <div class="legenda-item">
+              <div class="legenda-cor" [style.background-color]="corPlano(i)"></div>
+              <span>{{ item.planoNome }}</span>
+              <span class="legenda-valor">{{ formatarMoeda(item.valorMensal) }}/mês</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- Tabelas de Atividade Recente -->
+  <div class="tabelas-grid">
+
+    <!-- Últimos Pagamentos -->
+    <div class="card tabela-card">
+      <div class="card-cabecalho">
+        <h3 class="card-titulo">Últimos Pagamentos</h3>
+        <a routerLink="/pagamentos" class="link-ver-todos">Ver todos →</a>
+      </div>
+
+      @if (carregandoPagamentos()) {
+        <div class="tabela-skeleton">
+          @for (i of [1,2,3,4,5]; track i) {
+            <div class="linha-skeleton">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line skeleton-line-md"></div>
+                <div class="skeleton-line skeleton-line-sm"></div>
+              </div>
+              <div class="skeleton-line skeleton-line-sm" style="width: 80px"></div>
+            </div>
+          }
+        </div>
+      } @else if (erroPagamentos()) {
+        <div class="erro-inline">
+          <p>Erro ao carregar pagamentos.</p>
+          <button class="btn btn-outline btn-sm" (click)="carregarPagamentosRecentes()">Tentar novamente</button>
+        </div>
+      } @else if (pagamentosRecentes().length === 0) {
+        <div class="vazio-inline">Nenhum pagamento registrado.</div>
+      } @else {
+        <div class="atividade-lista">
+          @for (p of pagamentosRecentes(); track p.id) {
+            <div class="atividade-item">
+              <div class="atividade-avatar">{{ inicialNome(p.socioNome) }}</div>
+              <div class="atividade-info">
+                <span class="atividade-nome">{{ p.socioNome }}</span>
+                <span class="atividade-detalhe">{{ p.planoNome }} &bull; {{ nomeMes(p.mes) }} &bull; Parcela {{ p.parcela }}</span>
+              </div>
+              <div class="atividade-valor-col">
+                <span class="atividade-valor">{{ formatarMoeda(p.valor) }}</span>
+                <span class="atividade-data">{{ formatarData(p.data) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Sócios Recentes -->
+    <div class="card tabela-card">
+      <div class="card-cabecalho">
+        <h3 class="card-titulo">Sócios Recentes</h3>
+        <a routerLink="/socios" class="link-ver-todos">Ver todos →</a>
+      </div>
+
+      @if (carregandoSocios()) {
+        <div class="tabela-skeleton">
+          @for (i of [1,2,3,4,5]; track i) {
+            <div class="linha-skeleton">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line skeleton-line-md"></div>
+                <div class="skeleton-line skeleton-line-sm"></div>
+              </div>
+              <div class="skeleton-line skeleton-line-sm" style="width: 60px"></div>
+            </div>
+          }
+        </div>
+      } @else if (erroSocios()) {
+        <div class="erro-inline">
+          <p>Erro ao carregar sócios.</p>
+          <button class="btn btn-outline btn-sm" (click)="carregarSociosRecentes()">Tentar novamente</button>
+        </div>
+      } @else if (sociosRecentes().length === 0) {
+        <div class="vazio-inline">Nenhum sócio cadastrado.</div>
+      } @else {
+        <div class="atividade-lista">
+          @for (s of sociosRecentes(); track s.id) {
+            <div class="atividade-item">
+              <div class="atividade-avatar atividade-avatar-green">{{ inicialNome(s.nome) }}</div>
+              <div class="atividade-info">
+                <span class="atividade-nome">{{ s.nome }}</span>
+                <span class="atividade-detalhe">{{ s.email }}</span>
+              </div>
+              <div class="atividade-valor-col">
+                @if (s.planoAtual) {
+                  <span class="badge badge-primary">{{ s.planoAtual }}</span>
+                } @else {
+                  <span class="badge badge-secondary">Sem plano</span>
+                }
+                <span class="atividade-data">{{ s.codigoSocio }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
+</div>

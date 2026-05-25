@@ -3,6 +3,7 @@ import { Socios } from './socios/socios';
 import { Beneficios } from './beneficios/beneficios';
 import { Planos } from './planos/planos';
 import { Pagamentos } from './pagamentos/pagamentos';
+import { Dashboard } from './dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -34,5 +35,10 @@ export const routes: Routes = [
   {
     path: 'pagamentos',
     component: Pagamentos
+  },
+
+  {
+    path: 'dashboard',
+    component: Dashboard
   }
 ];
